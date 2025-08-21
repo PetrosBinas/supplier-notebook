@@ -5,7 +5,7 @@ Orders stay organized in a single notebook, while suppliers and products exist a
 
 ---
 
-## Supplier Notebook (Django + Celery + Gmail)
+## Supplier Notebook (Django + Docker + Celery + Gmail API)
 
 This is a project I built while learning Django, Celery, and Docker.  
 The idea is simple: as a business manager I want to organize suppliers and products, write down what I need, and let the app automatically send messages to each supplier instead of doing it manually.
