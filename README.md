@@ -34,6 +34,7 @@ This project is **Docker‑first** so it should run the same way for everyone.
 ```bash
 git clone https://github.com/TrosPe1/supplier-notebook.git
 cd supplier-notebook
+```
 
 ## 2) Create your .env
 
@@ -48,7 +49,7 @@ Now open `.env` in a text editor and set these values:
 - `DJANGO_DEBUG` → True (for development) or False (for production)  
 - `GMAIL_FROM_ADDRESS` → your Gmail address  
 
-👉 The Gmail credentials/token paths in `.env.example` are already correct for Docker.
+The Gmail credentials/token paths in `.env.example` are already correct for Docker.
 
 ---
 
@@ -60,7 +61,7 @@ The app talks to Gmail using the Gmail API. For that, you need Google OAuth cred
 2. Create a **Desktop OAuth client** for the Gmail API.  
 3. Download the `credentials.json` file.  
 
-⚠️ Don’t put it inside your repo. Store it outside your project.
+Don’t put it inside your repo. Store it outside your project.
 
 
 Leave `token.json` empty for now — it will be created in the next step.
@@ -71,8 +72,10 @@ Leave `token.json` empty for now — it will be created in the next step.
 
 Run:
 
+```bash
 docker compose up -d redis
 docker compose run --rm --service-ports quickstart
+```
 
 
 - It will show a Google login URL in your terminal.  
@@ -87,13 +90,16 @@ From now on, the app can send Gmail automatically.
 
 Django needs to set up the database tables:
 
+```bash
 docker compose run --rm web python manage.py migrate
+```
 
 
 (Optional) create a Django admin user:
 
+```bash
 docker compose run --rm web python manage.py createsuperuser
-
+```
 
 ---
 
@@ -101,7 +107,9 @@ docker compose run --rm web python manage.py createsuperuser
 
 Now start everything:
 
+```bash
 docker compose up --build
+```
 
 
 Open your browser at:
