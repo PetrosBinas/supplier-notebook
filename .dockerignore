@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+.env
+supplier_env/
+.vscode/
+
+.git
+.gitignore
+credentials.json
+token.json
+suppliers/gmail_messaging/credentials.json
+suppliers/gmail_messaging/token.json

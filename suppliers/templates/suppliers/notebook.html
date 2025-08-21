@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Notebook</title>
+    </head>
+    <body>
+        <h1>Scheduled Orders Management</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="product-name">Product</label>
+            <input type="search" 
+                name="product_name" 
+                list="product-options" 
+                required>
+
+            <datalist id="product-options">
+                {% for product in all_products %}
+                    <option value="{{ product.name }}"></option>
+                {% endfor %}
+            </datalist>
+
+            <label for="quantity">Quantity</label>
+            <input type="number" 
+                name="quantity"
+                min="0.1" 
+                step="0.1" >
+            
+            <button type="submit" name="action" value="add">Add or Replace Scheduled Order</button>
+            <button type="submit" name="action" value="delete">Delete Scheduled Order</button>
+
+        </form>
+
+        <h2>Products to be Ordered</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Product</th>
+                    <th>Added on</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for line in notebook_entries %}
+                    <tr>
+                        <td>{{ line.quantity }}</td>
+                        <td>{{ line.product.unit }}</td>
+                        <td>{{ line.product.name }}</td>
+                        <td>{{ line.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">Nothing Scheduled for Order Yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>            
+        </table>
+    </body>
+</html>

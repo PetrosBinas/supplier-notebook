@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>YearlyExpenses</title>
+    </head>
+    <body>
+        <h1>Supplier and Product Yearly Expenses</h1>
+        <h2>Product Expenses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Expenses</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in product_spendings %}
+                    <tr>
+                        <td>{{ product.product.name }}</td>
+                        <td>{{ product.cost }}</td>
+                        <td>{{ product.year }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No Expenses Yet</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2>Supplier Expenses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Expenses</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for supplier in supplier_spendings %}
+                    <tr>
+                        <td>{{ supplier.supplier.name }}</td>
+                        <td>{{ supplier.cost }}</td>
+                        <td>{{ supplier.year }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No Expenses Yet</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

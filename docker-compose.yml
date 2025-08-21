@@ -1,0 +1,75 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file:
+      - .env
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      GMAIL_CREDENTIALS_PATH: /run/secrets/gmail_credentials.json
+      GMAIL_TOKEN_PATH: /run/secrets/gmail_token.json
+      GMAIL_FROM_ADDRESS: ${GMAIL_FROM_ADDRESS}
+    volumes:
+      - .:/app
+      - C:/secrets/supplier-notebook/credentials.json:/run/secrets/gmail_credentials.json:ro
+      - C:/secrets/supplier-notebook/token.json:/run/secrets/gmail_token.json
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    command: celery -A config worker --loglevel=info
+    env_file:
+      - .env
+    environment:
+      GMAIL_CREDENTIALS_PATH: /run/secrets/gmail_credentials.json
+      GMAIL_TOKEN_PATH: /run/secrets/gmail_token.json
+      GMAIL_FROM_ADDRESS: ${GMAIL_FROM_ADDRESS}
+    volumes:
+      - .:/app
+      - C:/secrets/supplier-notebook/credentials.json:/run/secrets/gmail_credentials.json:ro
+      - C:/secrets/supplier-notebook/token.json:/run/secrets/gmail_token.json
+    depends_on:
+      - redis
+
+  beat:
+    build: .
+    command: celery -A config beat -l info --scheduler django_celery_beats.schedulers:DatabaseScheduler
+    env_file:
+      - .env
+    environment:
+      GMAIL_CREDENTIALS_PATH: /run/secrets/gmail_credentials.json
+      GMAIL_TOKEN_PATH: /run/secrets/gmail_token.json
+      GMAIL_FROM_ADDRESS: ${GMAIL_FROM_ADDRESS}
+    volumes:
+      - .:/app
+      - C:/secrets/supplier-notebook/credentials.json:/run/secrets/gmail_credentials.json:ro
+      - C:/secrets/supplier-notebook/token.json:/run/secrets/gmail_token.json
+    depends_on:
+      - redis
+      - web
+
+  
+  quickstart:
+    build: .
+    command: python suppliers/gmail_messaging/quickstart.py
+    env_file:
+      - .env
+    environment:
+      GMAIL_CREDENTIALS_PATH: /run/secrets/gmail_credentials.json
+      GMAIL_TOKEN_PATH: /run/secrets/gmail_token.json
+      OAUTH_PORT: ${OAUTH_PORT}
+    volumes:
+      - .:/app
+      - C:/secrets/supplier-notebook/credentials.json:/run/secrets/gmail_credentials.json:ro
+      - C:/secrets/supplier-notebook/token.json:/run/secrets/gmail_token.json
+    ports:
+      - "${OAUTH_PORT}:${OAUTH_PORT}"
+
+  redis:
+    image: redis:7
