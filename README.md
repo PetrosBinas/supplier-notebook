@@ -32,7 +32,7 @@ This project is **Docker‑first** so it should run the same way for everyone.
 ### 1) Clone the repo
 
 ```bash
-https://github.com/PetrosBinas/supplier-notebook.git
+git clone https://github.com/TrosPe1/supplier-notebook.git
 cd supplier-notebook
 ```
 
